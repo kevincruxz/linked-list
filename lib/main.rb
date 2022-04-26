@@ -32,7 +32,7 @@ end
 def selection
     inp = ''
     unless inp == 'exit'
-        print 'Write the name of the function you want to execute: '
+        print "\nWrite the name of the function you want to execute: "
         inp = gets.chomp
         inp == 'menu' ? selection_menu("\n--  Selection Menu  --\n") : checker(inp)
     end
@@ -56,28 +56,8 @@ def checker(inp)
             break
         end
     end
-    puts "\n#{out}\n\n" unless out.nil?
+    puts "\n#{out}\n" unless out.nil?
     selection
 end
 
 print_instructions
-
-# classss = LinkedList.new()
-# asaad = LinkedList.new
-# lalala = LinkedList.new
-# scsasd = LinkedList.new()
-# classss.append(8)
-# asaad.append(14)
-# lalala.append('asdadsap')
-# scsasd.append(9)
-# scsasd.prepend('jijiji')
-# puts scsasd.size
-# asasas = LinkedList.new
-# puts asasas.head
-# puts asasas.tail
-# puts asasas.at(5)
-# asasas.append(7)
-# asasas.pop
-# puts asasas.contains?(9)
-# puts asasas.find(9)
-# puts asasas.to_s

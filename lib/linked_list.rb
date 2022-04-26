@@ -3,6 +3,7 @@ require_relative 'node'
 # Containes all the node objects and th methods to interact with them
 class LinkedList
     @@nested_obj = nil
+    @@length = 0
 
     def append(value)
         if @@nested_obj.nil?
@@ -13,35 +14,50 @@ class LinkedList
             a = linked_list_rail('a')
             a.pointer = Node.new(value)
         end
+        @@length += 1
+        'Node added.'
     end
 
     def prepend(value)
         # Append a node to the start of the linked list
         @@nested_obj = Node.new(value, @@nested_obj)
+        @@length += 1
+        'Node added.'
     end
 
     def size
         # Returns the total num of nodes in the list
-        linked_list_rail('i')
+        @@length
     end
 
     def head
-        "[#{@@nested_obj.value}, --> ]"
+        !@@nested_obj.nil? ? "[#{@@nested_obj.value}, --> ]" : 'There are no nodes in the list.'
     end
 
     def tail
         a = linked_list_rail('a')
+        return 'There are no nodes in the list.' if a == 'error'
+
         "[#{a.value}, nil ]"
     end
 
     def at(index)
+        return 'There are no nodes in the list.' if size == 0
+
+        while index.to_i < 1 || index.to_i > size
+            print 'Wrong index, try another: '
+            index = gets.chomp
+        end
         a = linked_list_rail(index)
-        "[#{a.value}, --> ]"
+
+        a.pointer.nil? ? "[#{a.value}, nil ]" : "[#{a.value}, --> ]"
     end
 
     def pop
         a = linked_list_rail(size - 1)
         a.pointer = nil
+        @@length -= 1
+        'Last element removed.'
     end
 
     def contains?(value)
@@ -49,12 +65,15 @@ class LinkedList
     end
 
     def find(value)
-        linked_list_rail(value, 'f')
+        i = linked_list_rail(value, 'f')
+        i.is_a?(Integer) ? "The value is at index: #{i}" : 'Value not found.'
     end
 
     def to_s
-        str = ''
+        return 'There are no nodes in the list.' if @@nested_obj.nil?
+
         a = @@nested_obj
+        str = size == 1 ? "( #{a.value} ) --> nil" : ''
         until a.pointer.nil?
             str += "( #{a.value} )"
             a = a.pointer
@@ -68,10 +87,16 @@ class LinkedList
     end
 
     def linked_list_rail(need, caller = nil)
-        i = 1
+        return 'error' if @@nested_obj.nil?
+
         a = @@nested_obj
+        if caller
+            return true if need == a.value && caller == 'c'
+            return 1 if need == a.value && caller == 'f'
+        end
+        i = 1
         until a.pointer.nil?
-            return a if need == i && !caller
+            return a if need.to_i == i && caller.nil? # at method
 
             a = a.pointer
             i += 1
